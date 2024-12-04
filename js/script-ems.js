@@ -1,10 +1,10 @@
 // CREATE AN ARRAY OF EMPLOYEES
 let employees = [
-    { id: 1, name: "Alice Quang", extension: 1234, email: "alice@example.com", department: "HR" },
-    { id: 2, name: "Bob Smith", extension: 2345, email: "bob@example.com", department: "IT" },
-    { id: 3, name: "Charlie Brown", extension: 3456, email: "charlie@example.com", department: "Finance" },
-    { id: 4, name: "Dana Kate", extension: 4567, email: "dana@example.com", department: "Marketing" },
-    { id: 5, name: "Eve Max", extension: 5678, email: "eve@example.com", department: "Sales" }
+    { id: 12345678, name: "Alice Quang", extension: 1234, email: "alice@example.com", department: "Administrative" },
+    { id: 21345678, name: "Bob Smith", extension: 2345, email: "bob@example.com", department: "Engineering" },
+    { id: 31245678, name: "Charlie Brown", extension: 3456, email: "charlie@example.com", department: "Executive" },
+    { id: 41235678, name: "Dana Kate", extension: 4567, email: "dana@example.com", department: "Marketing" },
+    { id: 51234678, name: "Eve Max", extension: 5678, email: "eve@example.com", department: "Sales" }
 ];
 
 // CHECK TO SEE IF STORAGE OBJECT EXISTS WHEN THE PAGE LOADS
@@ -15,9 +15,9 @@ if (localStorage.getItem('employees')) {
 
 
 // GET DOM ELEMENTS
-const form = document.getElementById('employeeForm');
-const empTable = document.getElementById('employeeTable');
-const empTableBody = empTable.querySelector('tbody');
+const form = document.getElementById('addForm');
+const empTableBody = document.getElementById('empTable').querySelector('tbody');
+const empCount = document.getElementById('empCount');
 
 // BUILD THE EMPLOYEES TABLE WHEN THE PAGE LOADS
 buildGrid();
@@ -28,14 +28,14 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // GET THE VALUES FROM THE TEXT BOXES
-    const id = employees.length + 1; // Simple ID assignment
+    const id = form.elements['id'].value;
     const name = form.elements['name'].value;
     const extension = form.elements['extension'].value;
     const email = form.elements['email'].value;
     const department = form.elements['department'].value;
 
     // ADD THE NEW EMPLOYEE TO A NEW ARRAY OBJECT
-    const newEmployee = { id, name, extension, email, department };
+    const newEmployee = { id: parseInt(id), name, extension: parseInt(extension), email, department };
 
     // PUSH THE NEW ARRAY TO THE *EXISTING* EMPLOYEES ARRAY
     employees.push(newEmployee);
@@ -47,7 +47,7 @@ form.addEventListener('submit', (e) => {
     form.reset();
 
     // SET FOCUS BACK TO THE ID TEXT BOX
-
+    form.elements['id'].focus();
 });
 
 // DELETE EMPLOYEE
@@ -91,7 +91,7 @@ empTableBody.innerHTML += row;
     // BIND THE TBODY TO THE EMPLOYEE TABLE
     empTable.appendChild(empTableBody);
     // UPDATE EMPLOYEE COUNT
-
+    empCount.textContent = `(${employees.length})`;
     // STORE THE ARRAY IN STORAGE
     localStorage.setItem('employees', JSON.stringify(employees));
 };
